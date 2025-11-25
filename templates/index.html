@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTSP/RTP Video Streaming - Web Client</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 RTSP/RTP Video Streaming</h1>
+            <p class="subtitle">Web Browser Client</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Configuration Panel -->
+            <div class="config-panel">
+                <h2>📡 Server Control</h2>
+                
+                <!-- Server Management Section -->
+                <div class="server-control-section">
+                    <h3>🖥️ RTSP/RTP Server</h3>
+                    <div class="server-status">
+                        <span class="server-dot" id="rtspServerDot"></span>
+                        <span id="rtspServerStatus">Stopped</span>
+                    </div>
+                    <button id="startServerBtn" class="btn btn-success btn-block" onclick="startRtspServer()">
+                        <span class="btn-icon">▶️</span> Start Server
+                    </button>
+                    <button id="stopServerBtn" class="btn btn-danger btn-block" onclick="stopRtspServer()" disabled>
+                        <span class="btn-icon">⏹️</span> Stop Server
+                    </button>
+                </div>
+
+                <hr>
+
+                <!-- Connection Settings -->
+                <h3>📡 Connection Settings</h3>
+                <div class="form-group">
+                    <label for="serverAddr">Server Address:</label>
+                    <input type="text" id="serverAddr" value="localhost" placeholder="localhost">
+                </div>
+                <div class="form-group">
+                    <label for="serverPort">Server Port:</label>
+                    <input type="number" id="serverPort" value="8554" placeholder="8554">
+                </div>
+                <div class="form-group">
+                    <label for="videoFile">Video File:</label>
+                    <input type="text" id="videoFile" value="video/movie.Mjpeg" placeholder="video/movie.Mjpeg">
+                </div>
+                
+                <hr>
+                
+                <!-- Client Status -->
+                <h3>📺 Client Status</h3>
+                <div class="status-indicator">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">Not Connected</span>
+                </div>
+            </div>
+
+            <!-- Video Player -->
+            <div class="video-panel">
+                <div class="video-container">
+                    <img id="videoFrame" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 480'%3E%3Crect width='640' height='480' fill='%23000'/%3E%3Ctext x='50%25' y='50%25' font-size='24' fill='%23fff' text-anchor='middle' dominant-baseline='middle'%3EClick Setup to Start%3C/text%3E%3C/svg%3E" alt="Video Stream">
+                </div>
+                
+                <!-- Control Buttons -->
+                <div class="controls">
+                    <button id="setupBtn" class="btn btn-primary" onclick="setup()">
+                        <span class="btn-icon">⚙️</span> Setup
+                    </button>
+                    <button id="playBtn" class="btn btn-success" onclick="play()" disabled>
+                        <span class="btn-icon">▶️</span> Play
+                    </button>
+                    <button id="pauseBtn" class="btn btn-warning" onclick="pause()" disabled>
+                        <span class="btn-icon">⏸️</span> Pause
+                    </button>
+                    <button id="teardownBtn" class="btn btn-danger" onclick="teardown()" disabled>
+                        <span class="btn-icon">⏹️</span> Teardown
+                    </button>
+                </div>
+
+                <!-- Statistics -->
+                <div class="stats-panel">
+                    <h3>📊 Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">Frame:</span>
+                            <span class="stat-value" id="frameNum">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Packets:</span>
+                            <span class="stat-value" id="packets">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Data Rate:</span>
+                            <span class="stat-value" id="dataRate">0.00 kbps</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">FPS:</span>
+                            <span class="stat-value" id="fps">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Panel -->
+        <div class="log-panel">
+            <h3>📝 Activity Log</h3>
+            <div id="logContent" class="log-content"></div>
+            <button onclick="clearLog()" class="btn btn-secondary btn-sm">Clear Log</button>
+        </div>
+
+        <footer>
+            <p>Computer Network Lab (CIT-313) | RTSP/RTP Video Streaming Project</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
